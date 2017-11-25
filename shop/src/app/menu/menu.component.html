@@ -1,0 +1,21 @@
+<div class="ui secondary  menu">
+  <div class="left menu">
+    <a routerLink="/home" routerLinkActive="active" class="ui item">
+      Home
+    </a>
+
+    <a class="ui item">
+      Messages
+    </a>
+  </div>
+
+  <div class="right menu">
+    <a routerLink="/basket" routerLinkActive="active" class="ui item" data-tooltip="Go to basket" data-position="bottom center">
+      <i class="shopping basket icon"></i>
+      {{amount}}
+    </a>
+    <a class="ui item">
+      Logout
+    </a>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="ui container">
+  <div class="ui items">
+    <div class="item" *ngFor="let p of shoppingcart">
+      <div class="image">
+        <img src="data:{{p.product.image.filetype}};base64,{{p.product.image.value}}"
+          alt="{{p.product.image.filename}}">
+      </div>
+
+      <div class="content">
+        <h1 class="header">{{p.product.name}}</h1>
+        <div class="header right floated"> € {{p.product.price}} x{{p.amount}}</div>
+
+        <div class="description">
+          <p>{{p.product.category}}</p>
+        </div>
+        <div class="extra">{{p.product.description}}</div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="content">
+        <div class="header right floated">Total price: € {{fullPrice}}</div>
+      </div>
+    </div>
+  </div>
+</div>

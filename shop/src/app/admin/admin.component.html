@@ -1,0 +1,8 @@
+<div>
+  <input type="file" id="file" name="file" (change)="showPreview()" #fileInput/>
+  <button (click)="addProduct()">Add</button>
+</div>
+
+<div>
+  <img *ngIf="codedFile" src="data:{{codedFile.filetype}};base64,{{codedFile.value}}" alt="{{codedFile.filename}}" #preview/>
+</div>

@@ -1,0 +1,18 @@
+<div class="ui container">
+  <div class="ui form">
+      <div class="field">
+        <div class="ui right aligned category search item">
+          <div class="ui icon input">
+            <input type="text" placeholder="Search product..." (keyup)="filter(search.value)" #search>
+            <i class="search link icon"></i>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class='ui grid container'>
+    <div *ngFor='let p of showProducts' class='four wide column'>
+      <app-product-pagina [product] = "p" [amount]=0></app-product-pagina>
+    </div>
+  </div>
+</div>
