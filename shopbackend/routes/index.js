@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+let jwt = require('express-jwt');
+let auth = jwt({secret: process.env.RECIPE_BACKEND_SECRET, userProperty: 'payload'});
 
 var Product = require('../models/Product');
 

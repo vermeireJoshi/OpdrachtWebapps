@@ -6,9 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors');
+let passport = require('passport');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+
+require('./config/passport');
 
 var app = express();
 
@@ -25,6 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(express.static('public'));
+app.use(passport.initialize());
 
 app.use('/', index);
 app.use('/users', users);

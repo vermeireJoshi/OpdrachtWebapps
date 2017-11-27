@@ -1,1 +1,1 @@
-export SECRET = "thisIsATestSecret"
+export SECRET = "ThisIsATestSecret"
