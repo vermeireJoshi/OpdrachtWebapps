@@ -2,9 +2,11 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 let jwt = require('express-jwt');
-let auth = jwt({secret: process.env.RECIPE_BACKEND_SECRET, userProperty: 'payload'});
+let auth = jwt({secret: "ThisIsATestSecreat", userProperty: 'payload'});
 
 var Product = require('../models/Product');
+var Order = require('../models/Order');
+var User = require('../models/User');
 
 // Generic error handler used by all endpoints.
 function handleError(next, err, custom) {
@@ -57,19 +59,75 @@ router.get('/init', function(req, res, next) {
 
     newProduct.save(function(err) {
       if(err) {
-        handleError(next, err, "newProduct");
+        return handleError(next, err, "newProduct");
       }
     });
   }
 
-  res.json(producten);
+  return res.json(producten);
 });
 
 
 router.get('/products', function(req, res, next) {
   Product.find(function(err, products) {
-      if(err) { handleError(next, err); }
-      res.json(products);
+      if(err) { return handleError(next, err); }
+      return res.json(products);
+  });
+});
+
+router.get('/categories', function(req, res, next) {
+  Product.find(function(err, products) {
+    return res.json([...new Set(products.map(item => item.category))]);
+  });
+});
+
+router.post('/products/order', function(req, res, next) {
+  console.log("ORDERING...");
+  console.log(req.body);
+  var newOrder = new Order({
+    products: []
+  });
+  for(var i = 0; i < req.body.products.length; i++) {
+    var orderItem = {
+      id: req.body.products[i].product,
+      amount: req.body.products[i].amount
+    }
+    newOrder.products.push(orderItem);
+  }
+  console.log(newOrder);
+  return res.json("Response");
+});
+
+router.get('/likes/:username', function(req, res, next) {
+  User.findOne({
+    username: req.params.username
+  }, function(err, user) {
+    if(err) { return handleError(next, err.message,); }
+    if(!user) { return handleError(next, "User not found"); }
+    console.log(user);
+    console.log(user.likes);
+    return res.json(user.likes);
+  });
+});
+
+router.post('/likes/add/:username', function(req, res, next) {
+  User.findOne({
+    username: req.params.username
+  }, function(err, user) {
+    if(err) { return handleError(next, err.message,); }
+    if(!user) { return handleError(next, "User not found"); }
+    
+    var index = user.likes.indexOf(req.body.productId);
+    if(index < 0) {
+      user.likes.push(req.body.productId);
+    } else {
+      user.likes.splice(index, 1);
+    }
+    
+    user.save(function(err) {
+      if(err) { return handleError(next, err.message); }
+      return res.json("Succesful");
+    })
   });
 });
 

@@ -1,45 +1,44 @@
 <div class="ui card">
-    <div class="image">
-      <img src="data:{{product.image.filetype}};base64,{{product.image.value}}" alt="{{product.image.filename}}">
+  <div class="image">
+    <img src="data:{{product.image.filetype}};base64,{{product.image.value}}" alt="{{product.image.filename}}">
+  </div>
+
+  <div class="content">
+    <div class="ui left floated">
+      <h1 class="ui header">{{product.name}}</h1>
     </div>
-
-    <div class = "content">
-      <div class="ui left floated">
-        <h1 class="ui header">{{product.name}}</h1>
-      </div>
-      <div *ngIf="amount > 0" class="ui right floated">
-        <h2 class="ui header">x{{amount}}</h2>
-      </div>
+    <div *ngIf="amount > 0" class="ui right floated">
+      <h2 class="ui header">x{{amount}}</h2>
     </div>
+  </div>
 
-    <div class="content">
-      <h4 class="ui sub header">{{product.category}}</h4>
+  <div class="content">
+    <h4 class="ui sub header">{{product.category}}</h4>
 
-      <div class="ui small feed">
-        <div class="event">
-            <div class="summary">
-              {{product.description}}
-            </div>
-        </div>
-
-        <div class="event">
-            <div class="summary">
-              Price: € {{product.price}}
-            </div>
+    <div class="ui small feed">
+      <div class="event">
+        <div class="summary">
+          {{product.description}}
         </div>
       </div>
-    </div>
 
-    <div class="extra content">
-      <button class="ui labeled button" (click)="like()" data-tooltip="Like" data-position="right center">
-        <!--<i [ngClass]="product.liked?'red heart icon':'heart icon'"></i>-->
-        <i class="red heart icon"></i>
-      </button>
-
-      <div class="ui right floated">
-        <button *ngIf="amount == 0" class="ui labeled button" (click)="addToCart()" data-tooltip="Add to cart" data-position="right center">
-          <i class="add to cart icon"></i>
-        </button>
+      <div class="event">
+        <div class="summary">
+          Price: € {{product.price}}
+        </div>
       </div>
     </div>
   </div>
+
+  <div *ngIf="user" class="extra content">
+    <button class="ui labeled button" (click)="like()" data-tooltip="Like" data-position="right center">
+      <i [ngClass]="product.liked?'red heart icon':'heart icon'"></i>
+    </button>
+
+    <div class="ui right floated">
+      <button class="ui labeled button" (click)="addToCart()" data-tooltip="Add to cart" data-position="right center">
+        <i class="add to cart icon"></i>
+      </button>
+    </div>
+  </div>
+</div>

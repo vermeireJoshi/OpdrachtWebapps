@@ -6,8 +6,8 @@ export class Product {
   category: string;
   description: string;
   price: Number;
-  //liked: Boolean;
   image: Image;
+  liked: Boolean;
 
   constructor(name: string, category: string, description: string, price: Number, _id: string, image: Image) {
     this.name = name;
@@ -16,5 +16,6 @@ export class Product {
     this.price = price;
     this._id = _id;
     this.image = image;
+    this.liked = false;
   };
 }

@@ -5,7 +5,7 @@
     </a>
 
     <a class="ui item">
-      Messages
+      Mijn Bestellingen
     </a>
   </div>
 
@@ -14,7 +14,16 @@
       <i class="shopping basket icon"></i>
       {{amount}}
     </a>
-    <a class="ui item">
+    <a *ngIf="!user" routerLink="/login" routerLinkActive="active" class="ui item">
+      Login
+    </a>
+    <a *ngIf="!user" routerLink="/register" routerLinkActive="active" class="ui item">
+      Register
+    </a>
+    <p *ngIf="user" class="ui item">
+      {{user}}
+    </p>
+    <a *ngIf="user" (click)="logout()" class="ui item">
       Logout
     </a>
   </div>

@@ -30,23 +30,46 @@ export class ShoppingcartService {
     return this._totalPrice$.asObservable();
   }
 
+  setCartAmount(id: string, amount: number) {
+    var index = -1;
+
+    for(var i = 0; i < this._shoppingcart.cartitems.length; i++) {
+      if(this._shoppingcart.cartitems[i].product._id == id) {
+        index = i;
+      }
+    }
+
+    if(index >= 0) {
+      this._shoppingcart.cartitems[index].amount = amount;
+    }
+
+    localStorage.setItem('shoppingcart', JSON.stringify(this._shoppingcart));
+    this.setSubjects();
+  }
+
+  clearCart() {
+    localStorage.removeItem('shoppingcart');
+    this.setSubjects();
+  }
+
   addToCart(product: any, addAmount: number) {
     if(this._shoppingcart) {
-      let exists = false;
+      var index = -1;
 
-      for(let i in this._shoppingcart.cartitems) {
+      for(var i = 0; i < this._shoppingcart.cartitems.length; i++) {
         if(this._shoppingcart.cartitems[i].product._id == product._id) {
-          this._shoppingcart.cartitems[i].amount = this._shoppingcart.cartitems[i].amount + addAmount;
-          exists = true;
+          index = i;
         }
       }
 
-      if(!exists) {
+      if(index < 0) {
         let newItem = {
           product: product,
           amount: addAmount
         };
         this._shoppingcart.cartitems.push(newItem);
+      } else {
+        this._shoppingcart.cartitems[index].amount = +this._shoppingcart.cartitems[index].amount + +addAmount;
       }
     } else {
       let newItem = {
@@ -77,21 +100,22 @@ export class ShoppingcartService {
 
       localStorage.setItem('shoppingcart', JSON.stringify(this._shoppingcart));
       this.setSubjects();
-      console.log(this._shoppingcart);
     }
   }
 
   setSubjects() {
-    let amount = 0;
+    let amount: number = 0;
     let totalPrice = 0;
 
     if(this._shoppingcart) {
       for(let i in this._shoppingcart.cartitems) {
         let item = this._shoppingcart.cartitems[i];
-        amount += item.amount;
+        amount += +item.amount;
         totalPrice += item.product.price * item.amount;
       }
     }
+
+    console.log(amount + "  " + totalPrice);
 
     this._amount$.next(amount);
     this._totalPrice$.next(Math.round(totalPrice * 100) / 100);
