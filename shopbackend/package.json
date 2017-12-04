@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "sourc app-env && node ./bin/www",
+    "start": "node ./bin/www",
+    "startDev": "sourc app-env && node ./bin/www",
     "test": "node ./node_modules/jasmine/bin/jasmine.js"
   },
   "dependencies": {
