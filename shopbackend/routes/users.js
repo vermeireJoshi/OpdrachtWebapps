@@ -51,4 +51,15 @@ router.post('/login', function(req, res, next){
   })(req, res, next);
 });
 
+router.post('/checkusername', function(req, res, next) {
+  User.find({username: req.body.username}, 
+    function(err, result) {
+      if (result.length) {
+        res.json({'username': 'alreadyexists'})
+      } else {
+        res.json({'username': 'ok'})
+      }
+  });
+});
+
 module.exports = router;

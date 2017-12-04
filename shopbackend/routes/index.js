@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 let jwt = require('express-jwt');
-let auth = jwt({secret: "ThisIsATestSecreat", userProperty: 'payload'});
+let auth = jwt({secret: "THISISATESTSECRET", userProperty: 'payload'});
 
 var Product = require('../models/Product');
 var Order = require('../models/Order');
@@ -81,24 +81,61 @@ router.get('/categories', function(req, res, next) {
   });
 });
 
-router.post('/products/order', function(req, res, next) {
-  console.log("ORDERING...");
-  console.log(req.body);
-  var newOrder = new Order({
-    products: []
-  });
-  for(var i = 0; i < req.body.products.length; i++) {
-    var orderItem = {
-      id: req.body.products[i].product,
-      amount: req.body.products[i].amount
+router.get('/orders/:username', auth, function(req, res, next) {
+  User.findOne({
+    username: req.params.username
+  }).populate({
+    path: 'orders',
+    model: 'Order',
+    populate: {
+      path: 'products.product',
+      model: 'Product',
+      select: ['name', 'price']
     }
-    newOrder.products.push(orderItem);
-  }
-  console.log(newOrder);
-  return res.json("Response");
+  }).exec(function(err, user) {
+    if(err) { return handleError(next, err.message); }
+    if(!user) { return handleError(next, "Could not find use"); }
+
+    console.log(user.orders);
+    return res.json(user.orders);
+  });
 });
 
-router.get('/likes/:username', function(req, res, next) {
+router.post('/products/order', auth, function(req, res, next) {
+  User.findOne({
+    username: req.body.user
+  }, function(err, user) {
+    if(err) { return handleError(next, err.message); }
+    if(!user) { return handleError(next, "Could not find use"); }
+
+    var newOrder = new Order({
+      products: [],
+      date: new Date(),
+      totalPrice: req.body.totalPrice
+    });
+    for(var i = 0; i < req.body.products.length; i++) {
+      var orderItem = {
+        product: req.body.products[i].product,
+        amount: req.body.products[i].amount
+      }
+      newOrder.products.push(orderItem);
+    }
+    console.log(newOrder);
+
+    newOrder.save(function(err) {
+      if(err) { return handleError(next, err.message); }
+
+      user.orders.push(newOrder);
+      user.save(function(err) {
+        if(err) { return handleError(next, err.message); }
+
+        return res.json(newOrder);
+      });
+    });
+  });
+});
+
+router.get('/likes/:username', auth, function(req, res, next) {
   User.findOne({
     username: req.params.username
   }, function(err, user) {
@@ -110,7 +147,7 @@ router.get('/likes/:username', function(req, res, next) {
   });
 });
 
-router.post('/likes/add/:username', function(req, res, next) {
+router.post('/likes/add/:username', auth, function(req, res, next) {
   User.findOne({
     username: req.params.username
   }, function(err, user) {

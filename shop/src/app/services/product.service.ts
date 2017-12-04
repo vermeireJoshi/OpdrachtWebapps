@@ -2,17 +2,20 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import {Headers} from '@angular/http';
 
 import { Product } from '../models/product';
-import { Image } from '../models/image';
+import { Image } from '../models/Image';
+import { Order, OrderProduct } from '../models/Order';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class ProductService {
 
   private _products = new Array<Product>();
-  private _url = "http://localhost:5000/";
+  private _url = "https://webshopbackend.herokuapp.com/";
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private auth: AuthenticationService) {
   }
 
   get products(): Observable<Product[]> {
@@ -29,27 +32,17 @@ export class ProductService {
     );
   }
 
-  orderProducts(products: any, user: any) {
-    console.log(products);
-    var request = {
-      products: [],
-      user: user
-    }
-
-    for(var i = 0; i < products.length; i++) {
-      request.products.push({product: products[i].product._id, amount: products[i].amount});
-    }
-
-    return this.http.post(this._url + "products/order", request).map(response =>
-      response.json()
-    );
-  }
-
   getLikes(username: string): Observable<string[]> {
-    return this.http.get(this._url + "likes/" + username).map(response => response.json());
+    return this.http.get(this._url + "likes/" + username, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) }).map(response => response.json());
   }
 
   addLike(username: string, productId: string): Observable<string> {
-    return this.http.post(this._url + "likes/add/" + username, {'productId': productId}).map(response => response.json());
+    return this.http.post(this._url + "likes/add/" + username, {'productId': productId}, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) }).map(response => response.json());
+  }
+
+  getOrders(username: string): Observable<Order[]> {
+    return this.http.get(this._url + "orders/" + username, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) }).map(response => 
+      response.json()
+    );
   }
 }

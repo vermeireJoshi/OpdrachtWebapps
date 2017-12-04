@@ -3,9 +3,11 @@ var Product = require('./Product');
 
 var OrderSchema = new mongoose.Schema({
     products: [{
-        id: {type: mongoose.Schema.Types.ObjectId, ref:'Product'},
+        product: {type: mongoose.Schema.Types.ObjectId, ref:'Product'},
         amount: Number
     }],
+    date: Date,
+    totalPrice: Number,
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

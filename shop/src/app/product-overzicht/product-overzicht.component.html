@@ -1,8 +1,3 @@
-<div *ngIf="!user" id="welcome">
-  <h2 class="ui center aligned header">Welcome</h2>
-  <h2 class="ui center aligned header">Login to start shopping</h2>
-</div>
-
 <div class="ui container">
   <div class="ui form">
     <div class="field">
@@ -21,9 +16,12 @@
           <label>{{cat}}</label>
         </div>
       </div>
+
+      <div class="ui checkbox">
+        <input type="checkbox" name="example" (change)="filterOpLiked()">
+        <label>Liked</label>
+      </div>
     </div>
-
-
   </div>
 
   <div class='ui grid container'>

@@ -1,4 +1,4 @@
-import { Image } from './image';
+import { Image } from './Image';
 
 export class Product {
   _id: string;

@@ -27,7 +27,6 @@ export class AdminComponent implements OnInit {
 
   private setCodedFile() {
     var file = this.fileInput.nativeElement.files[0];
-    console.log(file);
     var reader = new FileReader();
 
     reader.readAsDataURL(file);
@@ -38,8 +37,6 @@ export class AdminComponent implements OnInit {
           filetype: file.type,
           value: reader.result.split(',')[1],
       };
-
-      console.log(this.codedFile.value);
     };
   }
 }

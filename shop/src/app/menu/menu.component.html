@@ -1,25 +1,33 @@
-<div class="ui secondary  menu">
+<div class="ui secondary menu">
   <div class="left menu">
     <a routerLink="/home" routerLinkActive="active" class="ui item">
       Home
     </a>
 
-    <a class="ui item">
-      Mijn Bestellingen
+    <a routerLink="/orders" routerLinkActive="active" class="ui item">
+      My orders
     </a>
   </div>
 
   <div class="right menu">
-    <a routerLink="/basket" routerLinkActive="active" class="ui item" data-tooltip="Go to basket" data-position="bottom center">
+    <a *ngIf="amount > 0" routerLink="/basket" routerLinkActive="active" class="ui item" data-tooltip="Go to basket" data-position="bottom center">
       <i class="shopping basket icon"></i>
       {{amount}}
     </a>
+    <a *ngIf="amount == 0" class="ui item" data-tooltip="No items in basket" data-position="bottom center">
+        <i class="shopping basket icon"></i>
+        {{amount}}
+      </a>
+
+    <!--Not logged in-->
     <a *ngIf="!user" routerLink="/login" routerLinkActive="active" class="ui item">
       Login
     </a>
     <a *ngIf="!user" routerLink="/register" routerLinkActive="active" class="ui item">
       Register
     </a>
+
+    <!--Logged in-->
     <p *ngIf="user" class="ui item">
       {{user}}
     </p>

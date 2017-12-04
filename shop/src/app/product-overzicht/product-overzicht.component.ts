@@ -11,13 +11,14 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class ProductOverzichtComponent implements OnInit {
 
-  private products: Product[];
-  private categories: string[];
-  private user: string;
+  products: Product[];
+  categories: string[];
+  user: string;
 
   showProducts: Product[];
   searchCategories: string[] = [];
   searchValue: string;
+  filterLiked: Boolean = false;
 
   constructor(private productService: ProductService, private authService: AuthenticationService) {
   }
@@ -53,6 +54,11 @@ export class ProductOverzichtComponent implements OnInit {
     } else {
       this.showProducts = this.products;
     }
+
+    if(this.filterLiked) {
+      this.showProducts = this.showProducts.filter(item => item.liked);
+    }
+
     if(this.searchCategories.length > 0) {
       this.showProducts = this.showProducts.filter(item => this.searchCategories.includes(item.category));
     }
@@ -60,6 +66,11 @@ export class ProductOverzichtComponent implements OnInit {
 
   filterOpValue(filter: string) {
     this.searchValue = filter;
+    this.filter();
+  }
+
+  filterOpLiked() {
+    this.filterLiked = !this.filterLiked;
     this.filter();
   }
 

@@ -34,12 +34,10 @@ app.use('/', index);
 app.use('/users', users);
 
 //establish mongoose connectie
-var databaseName = 'shop';
-
-mongoose.connect('mongodb://localhost/' + databaseName, {
+mongoose.connect(process.env.DATABASE_CONNECTION, {
   useMongoClient: true
 });
-console.log('Connected to database ' + databaseName);
+console.log('Connected to database');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,5 +56,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.use(express.static(__dirname + '/dist'));
+app.all('*',(req,res) => {
+    const indexFile = `${__dirname}/dist/index.html`;
+    res.status(200).sendFile(indexFile);
+})
 
 module.exports = app;

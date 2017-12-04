@@ -7,7 +7,7 @@ import { ShoppingcartService } from './shoppingcart.service';
 @Injectable()
 export class AuthenticationService {
 
-  private _url = 'http://localhost:5000/users';
+  private _url = 'https://webshopbackend.herokuapp.com/users';
   private _user$: BehaviorSubject<string>;
 
   constructor(private http: Http, private cartService: ShoppingcartService) {
@@ -17,6 +17,11 @@ export class AuthenticationService {
 
   get user$(): BehaviorSubject<string> {
     return this._user$;
+  }
+
+  get token(): string {
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser.token;
   }
 
   login(username: string, password: string): Observable<boolean> {
@@ -33,6 +38,14 @@ export class AuthenticationService {
         return false;
       }
     });
+  }
+
+  isLoggedIn(): Boolean {
+    if(this._user$.getValue()) {
+      return true;
+    }
+
+    return false;
   }
 
   register(username: string, password: string): Observable<boolean> {
@@ -52,9 +65,21 @@ export class AuthenticationService {
 
   logout() {
     if (this.user$.getValue()) {
-      this.cartService.clearCart();
       localStorage.removeItem('currentUser');
+      this.cartService.clearCart();
       setTimeout(() => this._user$.next(null));
     }
+  }
+
+  checkUserNameAvailability(username: string): Observable<boolean> {
+    return this.http.post(`${this._url}/checkusername`, { username: username }).map(res => res.json())
+    .map(item => {
+      console.log(item);
+      if (item.username === 'alreadyexists') {
+        return false;
+      } else {
+        return true;
+      }
+    });
   }
 }

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ShoppingcartService } from '../services/shoppingcart.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { ProductService } from '../services/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-basket',
@@ -15,8 +16,12 @@ export class BasketComponent implements OnInit {
   fullPrice: number;
   user: string;
 
-  constructor(private shoppingcartService: ShoppingcartService, private authService: AuthenticationService, private productService: ProductService) {
-    let temp = this.shoppingcartService.shoppingcart;
+  constructor(private cartService: ShoppingcartService, private authService: AuthenticationService, private router: Router) {
+    if(!this.authService.isLoggedIn()) {
+      this.router.navigate(['login']);
+    }
+
+    let temp = this.cartService.shoppingcart;
 
     if(temp) {
       for(let i in temp.cartitems) {
@@ -27,7 +32,7 @@ export class BasketComponent implements OnInit {
       }
     }
 
-    this.shoppingcartService.totalPrice.subscribe(total => {
+    this.cartService.totalPrice.subscribe(total => {
       this.fullPrice = total;
     });
 
@@ -38,12 +43,13 @@ export class BasketComponent implements OnInit {
   }
 
   changeCartAmount(amount: number, id: any) {
-    this.shoppingcartService.setCartAmount(id, amount);
+    this.cartService.setCartAmount(id, amount);
   }
 
   order() {
-    this.productService.orderProducts(this.shoppingcart, this.user).subscribe(item => {
-      console.log(item);
+    this.cartService.orderProducts(this.shoppingcart, this.fullPrice, this.user).subscribe(item => {
+      this.cartService.clearCart();
+      this.router.navigate(['/orders']);
     });
   }
 }

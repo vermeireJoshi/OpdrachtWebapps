@@ -1,14 +1,17 @@
-<form [formGroup]='user' (ngSubmit)='onSubmit()' class="ui large form segment">
-  <h3 class="ui header">login</h3>
-  <div class="field">
-    <label for="username">username:</label>
-    <input type="text" id="username" formControlName='username'>
-  </div>
-  <div class="field">
-    <label for="password">password:</label>
-    <input type="password" id="password" formControlName='password'>
-  </div>
-  <button type='submit' [disabled]='!user.valid' class="ui positive right floated button">log in</button>
-  <div *ngIf='errorMsg' class='ui red label'>{{errorMsg}}</div>
-  <a class='item' routerLink="/register" >register</a>
-</form>
+<div class="ui container">
+    <form [formGroup]='user' (ngSubmit)='onSubmit()' class="ui large inverted teal form segment">
+        <h2 class="ui header center aligned">Login</h2>
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" formControlName='username'>
+        </div>
+        <div class="field">
+          <label for="password">Psssword</label>
+          <input type="password" id="password" formControlName='password'>
+        </div>
+        <button type='submit' [disabled]='!user.valid' class="ui inverted button">Log in</button>
+        <button class='item' routerLink="/register" class="ui inverted button">Register</button>
+      </form>
+</div>
+  
+
