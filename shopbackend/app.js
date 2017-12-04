@@ -10,6 +10,7 @@ let passport = require('passport');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var admin = require('./routes/admin');
 
 require('./config/passport');
 
@@ -32,6 +33,7 @@ app.use(passport.initialize());
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/admin', admin);
 
 //establish mongoose connectie
 mongoose.connect(process.env.DATABASE_CONNECTION, {

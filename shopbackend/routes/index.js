@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 let jwt = require('express-jwt');
-let auth = jwt({secret: "THISISATESTSECRET", userProperty: 'payload'});
+let auth = jwt({secret: process.env.SECRET, userProperty: 'payload'});
 
 var Product = require('../models/Product');
 var Order = require('../models/Order');
@@ -93,7 +93,7 @@ router.get('/orders/:username', auth, function(req, res, next) {
       select: ['name', 'price']
     }
   }).exec(function(err, user) {
-    if(err) { return handleError(next, err.message); }
+    if(err) { return handleError(next, err); }
     if(!user) { return handleError(next, "Could not find use"); }
 
     console.log(user.orders);
@@ -105,7 +105,7 @@ router.post('/products/order', auth, function(req, res, next) {
   User.findOne({
     username: req.body.user
   }, function(err, user) {
-    if(err) { return handleError(next, err.message); }
+    if(err) { return handleError(next, err); }
     if(!user) { return handleError(next, "Could not find use"); }
 
     var newOrder = new Order({
@@ -123,11 +123,11 @@ router.post('/products/order', auth, function(req, res, next) {
     console.log(newOrder);
 
     newOrder.save(function(err) {
-      if(err) { return handleError(next, err.message); }
+      if(err) { return handleError(next, err); }
 
       user.orders.push(newOrder);
       user.save(function(err) {
-        if(err) { return handleError(next, err.message); }
+        if(err) { return handleError(next, err); }
 
         return res.json(newOrder);
       });
@@ -139,7 +139,7 @@ router.get('/likes/:username', auth, function(req, res, next) {
   User.findOne({
     username: req.params.username
   }, function(err, user) {
-    if(err) { return handleError(next, err.message,); }
+    if(err) { return handleError(next, err); }
     if(!user) { return handleError(next, "User not found"); }
     console.log(user);
     console.log(user.likes);
@@ -151,7 +151,7 @@ router.post('/likes/add/:username', auth, function(req, res, next) {
   User.findOne({
     username: req.params.username
   }, function(err, user) {
-    if(err) { return handleError(next, err.message,); }
+    if(err) { return handleError(next, err); }
     if(!user) { return handleError(next, "User not found"); }
     
     var index = user.likes.indexOf(req.body.productId);
@@ -162,7 +162,7 @@ router.post('/likes/add/:username', auth, function(req, res, next) {
     }
     
     user.save(function(err) {
-      if(err) { return handleError(next, err.message); }
+      if(err) { return handleError(next, err); }
       return res.json("Succesful");
     })
   });

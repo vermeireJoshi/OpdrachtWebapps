@@ -11,6 +11,7 @@ var UserSchema = new mongoose.Schema({
   },
   hash: String,
   salt: String,
+  role: String,
   orders: [{type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
   likes: [{type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
 });
