@@ -1,4 +1,8 @@
 <div class="ui container">
+  <div *ngIf="succesMessage" class="ui block header green">
+      <i class="checkmark icon"></i> {{succesMessage}}
+  </div>
+
   <form [formGroup]="product" (ngSubmit)="addProduct()" class="ui large inverted teal form segment">
     <h2 class="ui header center aligned">Add a product</h2>
     <div class="field">

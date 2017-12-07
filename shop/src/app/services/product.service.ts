@@ -47,8 +47,8 @@ export class ProductService {
   }
 
   addProduct(username: string, product: any): Observable<string> {
-    return this.http.post(this._url + "admin/add/product", {product: product, username: username}, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) }).map(response => 
-      response.json()
+    return this.http.post(this._url + "admin/add/product", {product: product, username: username}, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) })
+      .map(response => response.json()
     );
   }
 }

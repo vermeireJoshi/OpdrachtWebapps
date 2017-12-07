@@ -21,6 +21,7 @@ export class AdminComponent implements OnInit {
   categories: string[];
 
   sendProduct: any;
+  succesMessage: string;
 
   constructor(private authService: AuthenticationService, private router: Router, private fb: FormBuilder, private productService: ProductService) {
   }
@@ -32,19 +33,26 @@ export class AdminComponent implements OnInit {
       this.categories = item;
     });
 
-    this.product = this.fb.group({
-      name: ['', [Validators.required]],
-      category: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      price: ['', [Validators.required]],
-    });
+    this.initForm();
   }
 
   addProduct() {
     this.sendProduct = this.product.value;
     this.sendProduct.image = this.codedFile;
 
-    this.productService.addProduct(this.user, this.sendProduct).subscribe(item => console.log(item));
+    this.productService.addProduct(this.user, this.sendProduct).subscribe(item => {
+      this.succesMessage = "Succesfully added " + this.sendProduct.name;
+      this.initForm();
+    });
+  }
+
+  initForm() {
+    this.product = this.fb.group({
+      name: ['', [Validators.required]],
+      category: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      price: ['', [Validators.required]],
+    });
   }
 
   showPreview() {
