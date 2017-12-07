@@ -4,10 +4,16 @@
         <div class="field">
           <label for="username">Username</label>
           <input type="text" id="username" formControlName='username'>
+          <div class='ui pointing red basic label' *ngIf='errUsername'>
+            {{errUsername}}
+          </div>
         </div>
         <div class="field">
           <label for="password">Psssword</label>
           <input type="password" id="password" formControlName='password'>
+          <div class='ui pointing red basic label' *ngIf='errPassword'>
+            {{errPassword}}
+          </div>
         </div>
         <button type='submit' [disabled]='!user.valid' class="ui inverted button">Log in</button>
         <button class='item' routerLink="/register" class="ui inverted button">Register</button>

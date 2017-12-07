@@ -19,9 +19,9 @@ export class ProductService {
   }
 
   get products(): Observable<Product[]> {
-    return this.http.get(this._url + "products").map(response =>
+    return this.http.get(this._url + "products").map(response => 
       response.json().map(item => new Product(item.name, item.category, item.description, item.price, item._id,
-        new Image(item.image.filename, item.image.filetype, item.image.value)
+        item.image? new Image(item.image.filename, item.image.filetype, item.image.value) : undefined
       )
     ));
   }
@@ -42,6 +42,12 @@ export class ProductService {
 
   getOrders(username: string): Observable<Order[]> {
     return this.http.get(this._url + "orders/" + username, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) }).map(response => 
+      response.json()
+    );
+  }
+
+  addProduct(username: string, product: any): Observable<string> {
+    return this.http.post(this._url + "admin/add/product", {product: product, username: username}, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) }).map(response => 
       response.json()
     );
   }

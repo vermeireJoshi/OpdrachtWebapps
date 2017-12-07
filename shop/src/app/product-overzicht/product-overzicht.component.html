@@ -24,9 +24,11 @@
     </div>
   </div>
 
-  <div class='ui grid container'>
-    <div *ngFor='let p of showProducts' class='four wide column'>
-      <app-product-pagina [product]="p" [user]="user"></app-product-pagina>
+  <div class="ui centered container">
+    <div class="ui four column doubling stackable grid">
+        <div *ngFor='let p of showProducts' class="column"> <!--//class="sixteen wide center mobile eight wide tablet four wide computer column">-->
+            <app-product-pagina [product]="p" [user]="user"></app-product-pagina>
+          </div>
     </div>
   </div>
 </div>

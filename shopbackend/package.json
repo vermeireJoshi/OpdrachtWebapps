@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "startDev": "sourc app-env && node ./bin/www",
+    "startDev": "source app-env && node ./bin/www",
+    "startTest": "source app-env-spec && node ./bin/www",
     "test": "node ./node_modules/jasmine/bin/jasmine.js"
   },
   "dependencies": {

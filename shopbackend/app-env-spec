@@ -1,0 +1,2 @@
+export SECRET="THISISATESTSECRET"
+export DATABASE_CONNECTION="mongodb://localhost:27017/shop_test"

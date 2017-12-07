@@ -97,7 +97,6 @@ export class ShoppingcartService {
   }
 
   orderProducts(products: any, fullPrice: number, user: any) {
-    console.log(products);
     var request = {
       products: [],
       user: user,
@@ -129,8 +128,6 @@ export class ShoppingcartService {
         totalPrice += item.product.price * item.amount;
       }
     }
-
-    console.log(amount + "  " + totalPrice);
 
     this._amount$.next(amount);
     this._totalPrice$.next(Math.round(totalPrice * 100) / 100);

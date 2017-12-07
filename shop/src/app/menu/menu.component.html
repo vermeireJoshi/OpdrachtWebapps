@@ -4,17 +4,17 @@
       Home
     </a>
 
-    <a routerLink="/orders" routerLinkActive="active" class="ui item">
+    <a *ngIf="user && !isAdmin" routerLink="/orders" routerLinkActive="active" class="ui item">
       My orders
+    </a>
+
+    <a *ngIf="user && isAdmin" routerLink="/admin" routerLinkActive="active" class="ui item">
+      Admin
     </a>
   </div>
 
   <div class="right menu">
-    <a *ngIf="amount > 0" routerLink="/basket" routerLinkActive="active" class="ui item" data-tooltip="Go to basket" data-position="bottom center">
-      <i class="shopping basket icon"></i>
-      {{amount}}
-    </a>
-    <a *ngIf="amount == 0" class="ui item" data-tooltip="No items in basket" data-position="bottom center">
+    <a routerLink="/basket" routerLinkActive="active" class="ui item" data-tooltip="" data-position="bottom center" #basket> 
         <i class="shopping basket icon"></i>
         {{amount}}
       </a>

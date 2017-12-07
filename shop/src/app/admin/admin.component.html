@@ -1,8 +1,55 @@
-<div>
-  <input type="file" id="file" name="file" (change)="showPreview()" #fileInput/>
-  <button (click)="addProduct()">Add</button>
+<div class="ui container">
+  <form [formGroup]="product" (ngSubmit)="addProduct()" class="ui large inverted teal form segment">
+    <h2 class="ui header center aligned">Add a product</h2>
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" id="name" formControlName="name">
+
+      <div class='ui pointing red basic label' *ngIf='product.get("name").errors?.required && product.get("name").touched'>
+        Product name is required
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Category</label>
+      <select id="category" formControlName="category" name="skills" class="ui dropdown">
+        <option disabled selected value> -- Select a category -- </option>
+        <option *ngFor="let cat of categories; let i = index" [ngValue]="cat">{{cat}}</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea type="text" id="description" formControlName="description"></textarea>
+      <div class='ui pointing red basic label' *ngIf='product.get("description").errors?.required && product.get("description").touched'>
+        Product description is required
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="price">Price</label>
+      <input type="number" id="price" formControlName="price">
+      <div class='ui pointing red basic label' *ngIf='product.get("price").errors?.required && product.get("price").touched'>
+        Product price is required
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Picture</label>
+      <div class="picture">
+        <input type="file" id="file" name="file" (change)="showPreview()" #fileInput/>
+        <img class="left aligned" *ngIf="codedFile" src="data:{{codedFile.filetype}};base64,{{codedFile.value}}" alt="{{codedFile.filename}}"
+          #preview/>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="!product.valid">Submit</button>
+  </form>
 </div>
 
-<div>
-  <img *ngIf="codedFile" src="data:{{codedFile.filetype}};base64,{{codedFile.value}}" alt="{{codedFile.filename}}" #preview/>
-</div>
+<script>
+  $('.tag.example .ui.dropdown')
+    .dropdown({
+      allowAdditions: true
+    });
+</script>

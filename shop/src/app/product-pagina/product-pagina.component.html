@@ -1,6 +1,10 @@
 <div class="ui card">
-  <div class="image">
+  <div *ngIf="product.image" class="image">
     <img src="data:{{product.image.filetype}};base64,{{product.image.value}}" alt="{{product.image.filename}}">
+  </div>
+
+  <div *ngIf="!product.image" class="image">
+      <img src="/assets/images/placeholder.png" alt="No image provided">      
   </div>
 
   <div class="content">

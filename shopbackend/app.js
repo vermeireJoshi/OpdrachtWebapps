@@ -36,6 +36,7 @@ app.use('/users', users);
 app.use('/admin', admin);
 
 //establish mongoose connectie
+console.log(process.env.DATABASE_CONNECTION);
 mongoose.connect(process.env.DATABASE_CONNECTION, {
   useMongoClient: true
 });
